@@ -1,0 +1,43 @@
+services:
+  web1:
+    image: beatrizalonso/web1:latest
+    ports:
+      - "8080:80"
+    networks:
+      mynetwork:
+        ipv4_address: 172.20.0.2
+
+  web2:
+    image: beatrizalonso/web2:latest
+    ports:
+      - "8081:80"
+    networks:
+      mynetwork:
+        ipv4_address: 172.20.0.3
+
+  firewall:
+    image: beatrizalonso/firewall:latest
+    cap_add:
+      - NET_ADMIN
+    networks:
+      mynetwork:
+        ipv4_address: 172.20.0.4
+
+  parrot:
+    image: beatrizalonso/parrotsec:latest
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+    networks:
+      mynetwork:
+        ipv4_address: 172.20.0.5
+    stdin_open: true
+    tty: true
+
+networks:
+  mynetwork:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+
